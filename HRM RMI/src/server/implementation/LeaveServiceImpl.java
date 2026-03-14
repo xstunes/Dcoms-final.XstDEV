@@ -26,8 +26,6 @@ public class LeaveServiceImpl extends UnicastRemoteObject implements LeaveServic
         this.employeeRepo = employeeRepo;
     }
 
-    // ── Apply for Leave ───────────────────────────────────────────────────────
-
     @Override
     public LeaveApplication applyForLeave(String employeeEmail, String name, String role,
                                           LocalDate fromDate, LocalDate toDate)
@@ -41,8 +39,6 @@ public class LeaveServiceImpl extends UnicastRemoteObject implements LeaveServic
         LeaveApplication la = new LeaveApplication(id, employeeEmail, name, role, fromDate, toDate);
         return la; // not yet persisted – caller must call submitLeaveApplication
     }
-
-    // ── Submit Leave Application ──────────────────────────────────────────────
 
     @Override
     public boolean submitLeaveApplication(LeaveApplication leaveApplication) throws RemoteException {
@@ -78,15 +74,11 @@ public class LeaveServiceImpl extends UnicastRemoteObject implements LeaveServic
         return totalBalance - usedDays;
     }*/
 
-    // ── View Leave Application Status ─────────────────────────────────────────
-
     @Override
     public List<LeaveApplication> viewLeaveApplicationStatus(String employeeEmail)
             throws RemoteException {
         return leaveRepo.findByEmail(employeeEmail);
     }
-
-    // ── Approve Leave Application ─────────────────────────────────────────────
 
     @Override
     public boolean approveLeaveApplication(String applicationId) throws RemoteException {
@@ -99,8 +91,6 @@ public class LeaveServiceImpl extends UnicastRemoteObject implements LeaveServic
         return leaveRepo.update(la);
     }
 
-    // ── Reject Leave Application ──────────────────────────────────────────────
-
     @Override
     public boolean rejectLeaveApplication(String applicationId) throws RemoteException {
         LeaveApplication la = leaveRepo.findById(applicationId);
@@ -112,21 +102,15 @@ public class LeaveServiceImpl extends UnicastRemoteObject implements LeaveServic
         return leaveRepo.update(la);
     }
 
-    // ── Get All Pending ───────────────────────────────────────────────────────
-
     @Override
     public List<LeaveApplication> getAllPendingApplications() throws RemoteException {
         return leaveRepo.findByStatus("Pending");
     }
 
-    // ── Get All ───────────────────────────────────────────────────────────────
-
     @Override
     public List<LeaveApplication> getAllLeaveApplications() throws RemoteException {
         return leaveRepo.loadAll();
     }
-
-    // ── Get by Employee ───────────────────────────────────────────────────────
 
     @Override
     public List<LeaveApplication> getLeaveApplicationsByEmployee(String employeeEmail)

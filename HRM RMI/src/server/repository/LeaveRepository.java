@@ -11,15 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Handles reading/writing LeaveApplication objects to data/leave_requests.json.
- * Uses org.json.simple (bundled via json-simple-1.1.1.jar).
- */
 public class LeaveRepository {
 
     private static final String DATA_FILE = "data/leave_requests.json";
-
-    // ── Load ──────────────────────────────────────────────────────────────────
 
     @SuppressWarnings("unchecked")
     public List<LeaveApplication> loadAll() {
@@ -43,7 +37,6 @@ public class LeaveRepository {
         return list;
     }
 
-    // ── Save all ──────────────────────────────────────────────────────────────
 
     @SuppressWarnings("unchecked")
     public void saveAll(List<LeaveApplication> applications) {
@@ -58,8 +51,6 @@ public class LeaveRepository {
         }
     }
 
-    // ── Add ───────────────────────────────────────────────────────────────────
-
     public void add(LeaveApplication la) {
         List<LeaveApplication> all = loadAll();
         // generate unique ID if not set
@@ -69,8 +60,6 @@ public class LeaveRepository {
         all.add(la);
         saveAll(all);
     }
-
-    // ── Update (by applicationId) ─────────────────────────────────────────────
 
     public boolean update(LeaveApplication updated) {
         List<LeaveApplication> all = loadAll();
@@ -84,16 +73,12 @@ public class LeaveRepository {
         return false;
     }
 
-    // ── Find by ID ────────────────────────────────────────────────────────────
-
     public LeaveApplication findById(String applicationId) {
         for (LeaveApplication la : loadAll()) {
             if (la.getApplicationId().equals(applicationId)) return la;
         }
         return null;
     }
-
-    // ── Find by employee email ─────────────────────────────────────────────────
 
     public List<LeaveApplication> findByEmail(String email) {
         List<LeaveApplication> result = new ArrayList<>();
@@ -103,7 +88,6 @@ public class LeaveRepository {
         return result;
     }
 
-    // ── Find by status ────────────────────────────────────────────────────────
 
     public List<LeaveApplication> findByStatus(String status) {
         List<LeaveApplication> result = new ArrayList<>();
@@ -113,7 +97,6 @@ public class LeaveRepository {
         return result;
     }
 
-    // ── JSON helpers ──────────────────────────────────────────────────────────
 
     @SuppressWarnings("unchecked")
     private JSONObject toJson(LeaveApplication la) {
