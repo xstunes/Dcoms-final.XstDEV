@@ -4,7 +4,6 @@ import common.models.Employee;
 import common.models.LeaveApplication;
 
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -42,8 +41,8 @@ public class YearlyReportGenerator {
 
         // ── Header ────────────────────────────────────────────
         sb.append(DIVIDER).append("\n");
-        sb.append(centre(String.format("YEARLY REPORT — %d", year), 60)).append("\n");
-        sb.append(centre("Generated: " + timestamp, 60)).append("\n");
+        sb.append(centre(String.format("YEARLY REPORT — %d", year))).append("\n");
+        sb.append(centre("Generated: " + timestamp)).append("\n");
         sb.append(DIVIDER).append("\n\n");
 
         // ── Filter leaves for target year ──────────────────────
@@ -97,9 +96,7 @@ public class YearlyReportGenerator {
 
         // Separator
         sb.append(String.format("%-10s %-18s", "-".repeat(8), "-".repeat(16)));
-        for (int i = 0; i < 12; i++) {
-            sb.append(String.format(" %-4s", "----"));
-        }
+        sb.append((" ----").repeat(12));
         sb.append(String.format(" %-6s%n", "-----"));
 
         int grandTotalApprovedDays = 0;
@@ -130,7 +127,7 @@ public class YearlyReportGenerator {
         // Group by department
         Map<String, List<Employee>> byDept = new LinkedHashMap<>();
         for (Employee e : employees) {
-            byDept.computeIfAbsent(e.getDepartment(), k -> new ArrayList<>()).add(e);
+            byDept.computeIfAbsent(e.getDepartment(), dept -> new ArrayList<>()).add(e);
         }
 
         double grandTotalSalary = 0;
@@ -179,7 +176,8 @@ public class YearlyReportGenerator {
 
     // ── Utilities ─────────────────────────────────────────────
 
-    private String centre(String text, int width) {
+    private String centre(String text) {
+        int width = 60;
         if (text.length() >= width) return text;
         int padding = (width - text.length()) / 2;
         return " ".repeat(padding) + text;

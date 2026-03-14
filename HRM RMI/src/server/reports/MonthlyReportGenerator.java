@@ -40,9 +40,9 @@ public class MonthlyReportGenerator {
 
         // ── Header ────────────────────────────────────────────
         sb.append(DIVIDER).append("\n");
-        sb.append(centre(String.format("MONTHLY REPORT — %s %d", monthLabel.toUpperCase(), year), 60))
+        sb.append(centre(String.format("MONTHLY REPORT — %s %d", monthLabel.toUpperCase(), year)))
                 .append("\n");
-        sb.append(centre("Generated: " + timestamp, 60)).append("\n");
+        sb.append(centre("Generated: " + timestamp)).append("\n");
         sb.append(DIVIDER).append("\n\n");
 
         // ── Filter leaves that fall within the target month/year ──
@@ -52,13 +52,6 @@ public class MonthlyReportGenerator {
                     && la.getFromDate().getYear() == year) {
                 monthLeaves.add(la);
             }
-        }
-
-        // ── Build per-employee lookup map ──────────────────────
-        // employeeId -> Employee
-        Map<String, Employee> empMap = new LinkedHashMap<>();
-        for (Employee e : employees) {
-            empMap.put(e.getEmployeeId().toUpperCase(), e);
         }
 
         // ── Per-employee leave stats ───────────────────────────
@@ -127,7 +120,7 @@ public class MonthlyReportGenerator {
         // Group employees by department
         Map<String, List<Employee>> byDept = new LinkedHashMap<>();
         for (Employee e : employees) {
-            byDept.computeIfAbsent(e.getDepartment(), k -> new ArrayList<>()).add(e);
+            byDept.computeIfAbsent(e.getDepartment(), dept -> new ArrayList<>()).add(e);
         }
 
         double grandTotalSalary = 0;
@@ -170,7 +163,8 @@ public class MonthlyReportGenerator {
 
     // ── Utilities ─────────────────────────────────────────────
 
-    private String centre(String text, int width) {
+    private String centre(String text) {
+        int width = 60;
         if (text.length() >= width) return text;
         int padding = (width - text.length()) / 2;
         return " ".repeat(padding) + text;

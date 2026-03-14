@@ -15,8 +15,6 @@ public class EmployeeReportGenerator {
 
     private static final String DIVIDER =
             "============================================================";
-    private static final String THIN_DIVIDER =
-            "------------------------------------------------------------";
     private static final DateTimeFormatter TIMESTAMP_FMT =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -33,8 +31,8 @@ public class EmployeeReportGenerator {
 
         // ── Header ────────────────────────────────────────────
         sb.append(DIVIDER).append("\n");
-        sb.append(centre("EMPLOYEE REPORT", 60)).append("\n");
-        sb.append(centre("Generated: " + timestamp, 60)).append("\n");
+        sb.append(centre("EMPLOYEE REPORT")).append("\n");
+        sb.append(centre("Generated: " + timestamp)).append("\n");
         sb.append(DIVIDER).append("\n\n");
 
         // ── Profile ───────────────────────────────────────────
@@ -88,7 +86,8 @@ public class EmployeeReportGenerator {
 
     // ── Utility ───────────────────────────────────────────────
 
-    private String centre(String text, int width) {
+    private String centre(String text) {
+        int width = 60;
         if (text.length() >= width) return text;
         int padding = (width - text.length()) / 2;
         return " ".repeat(padding) + text;
