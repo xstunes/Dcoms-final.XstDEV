@@ -56,10 +56,15 @@ public class LeaveServiceImpl extends UnicastRemoteObject implements LeaveServic
         return true;
     }
 
-    // ── View Leave Balance ────────────────────────────────────────────────────
-
     @Override
     public int viewLeaveBalance(String employeeEmail) throws RemoteException {
+        return 0;
+    }
+
+    // ── View Leave Balance ────────────────────────────────────────────────────
+
+    //@Override
+    /*public int viewLeaveBalance(String employeeEmail) throws RemoteException {
         // Get total leave balance from employee record
         int totalBalance = employeeRepo.getTotalLeaveBalance(employeeEmail);
 
@@ -71,7 +76,7 @@ public class LeaveServiceImpl extends UnicastRemoteObject implements LeaveServic
 
         int usedDays = approved.stream().mapToInt(LeaveApplication::getAmountOfDays).sum();
         return totalBalance - usedDays;
-    }
+    }*/
 
     // ── View Leave Application Status ─────────────────────────────────────────
 
