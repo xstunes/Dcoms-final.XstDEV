@@ -8,27 +8,20 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- * CLI menu for the Leave Management Module.
- * Employees see: Apply, View Balance, View Status.
- * HR staff see:  All Applications, Approve/Reject, View All.
- */
 public class LeaveMenu {
 
     private static final String DIVIDER =
             "============================================================";
-    private static final String THIN =
+    private static final String SINGLE_LINE =
             "------------------------------------------------------------";
 
     private final LeaveController leaveController;
-    private final Scanner         scanner;
+    private final Scanner scanner;
 
     public LeaveMenu(LeaveController leaveController, Scanner scanner) {
         this.leaveController = leaveController;
-        this.scanner         = scanner;
+        this.scanner = scanner;
     }
-
-    // ── Entry point ───────────────────────────────────────────────────────────
 
     public void show(User currentUser) {
         boolean running = true;
@@ -44,18 +37,18 @@ public class LeaveMenu {
             String choice = scanner.nextLine().trim();
 
             if (isHR(currentUser)) {
-                running = handleHRChoice(choice, currentUser);
+                running = HRChoice(choice, currentUser);
             } else {
-                running = handleEmployeeChoice(choice, currentUser);
+                running = EmployeeChoice(choice, currentUser);
             }
         }
     }
 
-    // ── Headers ───────────────────────────────────────────────────────────────
+    //MenuOptions
 
     private void printLeaveHeader() {
         System.out.println("\n" + DIVIDER);
-        System.out.println("         LEAVE MANAGEMENT MODULE");
+        System.out.println("         LEAVE MANAGEMENT MODULE         ");
         System.out.println(DIVIDER);
     }
 
@@ -64,7 +57,7 @@ public class LeaveMenu {
         System.out.println("  [2] View Leave Balance");
         System.out.println("  [3] View My Leave Application Status");
         System.out.println("  [0] Back");
-        System.out.println(THIN);
+        System.out.println(SINGLE_LINE);
     }
 
     private void printHROptions() {
@@ -73,12 +66,12 @@ public class LeaveMenu {
         System.out.println("  [3] Reject Leave Application");
         System.out.println("  [4] View All Leave Applications");
         System.out.println("  [0] Back");
-        System.out.println(THIN);
+        System.out.println(SINGLE_LINE);
     }
 
-    // ── Employee Handlers ─────────────────────────────────────────────────────
+    //Employee
 
-    private boolean handleEmployeeChoice(String choice, User currentUser) {
+    private boolean EmployeeChoice(String choice, User currentUser) {
         switch (choice) {
             case "1" -> applyForLeave(currentUser);
             case "2" -> viewLeaveBalance(currentUser);
@@ -102,23 +95,22 @@ public class LeaveMenu {
             System.out.println("  [!] Could not retrieve balance: " + e.getMessage());
         }
 
-        System.out.println(THIN);
+        System.out.println(SINGLE_LINE);
         System.out.println("  Applicant Name  : " + currentUser.getName());
         System.out.println("  Job Role        : " + currentUser.getRole());
-        System.out.println(THIN);
+        System.out.println(SINGLE_LINE);
         System.out.println("  Enter leave dates (format: YYYY-MM-DD)");
 
         String fromDate = prompt("  From Date       : ");
         String toDate   = prompt("  To Date         : ");
 
-        // Preview & confirm
-        System.out.println(THIN);
+        System.out.println(SINGLE_LINE);
         System.out.println("  ── Leave Application Preview ──");
         System.out.println("  Name        : " + currentUser.getName());
         System.out.println("  Role        : " + currentUser.getRole());
         System.out.println("  From        : " + fromDate);
         System.out.println("  To          : " + toDate);
-        System.out.println(THIN);
+        System.out.println(SINGLE_LINE);
         System.out.print("  Confirm and submit? (Y/N): ");
         String confirm = scanner.nextLine().trim();
 
@@ -135,10 +127,10 @@ public class LeaveMenu {
                     fromDate,
                     toDate
             );
-            System.out.println("\n  ✔  Leave application submitted successfully!");
+            System.out.println("\nLeave application submitted successfully!");
             printApplicationCard(la);
         } catch (Exception e) {
-            System.out.println("\n  [✘] Submission failed: " + e.getMessage());
+            System.out.println("\nSubmission failed: " + e.getMessage());
         }
     }
 
@@ -150,7 +142,7 @@ public class LeaveMenu {
             int balance = leaveController.getLeaveBalance(currentUser.getEmail());
             System.out.println("  Employee  : " + currentUser.getName());
             System.out.println("  Role      : " + currentUser.getRole());
-            System.out.println(THIN);
+            System.out.println(SINGLE_LINE);
             System.out.printf("  Available Leave Balance  : %d day(s)%n", balance);
             System.out.println(DIVIDER);
         } catch (RemoteException e) {
@@ -177,9 +169,9 @@ public class LeaveMenu {
         System.out.println(DIVIDER);
     }
 
-    // ── HR Handlers ───────────────────────────────────────────────────────────
+    //HR
 
-    private boolean handleHRChoice(String choice, User currentUser) {
+    private boolean HRChoice(String choice, User currentUser) {
         switch (choice) {
             case "1" -> viewPendingApplications();
             case "2" -> approveApplication();
@@ -206,7 +198,7 @@ public class LeaveMenu {
                 }
             }
         } catch (RemoteException e) {
-            System.out.println("  [!] Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
         System.out.println(DIVIDER);
     }
@@ -218,14 +210,14 @@ public class LeaveMenu {
         String appId = prompt("  Enter Application ID to approve: ");
         System.out.print("  Confirm approval of [" + appId + "]? (Y/N): ");
         if (!scanner.nextLine().trim().equalsIgnoreCase("Y")) {
-            System.out.println("  [i] Action cancelled.");
+            System.out.println("Action cancelled.");
             return;
         }
         try {
             boolean ok = leaveController.approve(appId);
             System.out.println(ok
-                    ? "  ✔  Application [" + appId + "] has been APPROVED."
-                    : "  [✘] Approval failed.");
+                    ? "Application [" + appId + "] has been APPROVED."
+                    : "Approval failed.");
         } catch (RemoteException e) {
             System.out.println("  [!] Error: " + e.getMessage());
         }
@@ -244,8 +236,8 @@ public class LeaveMenu {
         try {
             boolean ok = leaveController.reject(appId);
             System.out.println(ok
-                    ? "  ✔  Application [" + appId + "] has been DECLINED."
-                    : "  [✘] Rejection failed.");
+                    ? " Application [" + appId + "] has been DECLINED."
+                    : " Rejection failed.");
         } catch (RemoteException e) {
             System.out.println("  [!] Error: " + e.getMessage());
         }
@@ -271,16 +263,14 @@ public class LeaveMenu {
         System.out.println(DIVIDER);
     }
 
-    // ── Utility ───────────────────────────────────────────────────────────────
-
     private void printApplicationCard(LeaveApplication la) {
         String statusBadge = switch (la.getStatus()) {
-            case "Approved" -> "[ ✔ APPROVED ]";
-            case "Declined" -> "[ ✘ DECLINED ]";
-            default         -> "[  PENDING   ]";
+            case "Approved" -> "[ APPROVED ]";
+            case "Declined" -> "[ DECLINED ]";
+            default         -> "[ PENDING ]";
         };
 
-        System.out.println(THIN);
+        System.out.println(SINGLE_LINE);
         System.out.println("  Application ID   : " + la.getApplicationId());
         System.out.println("  Employee         : " + la.getName());
         System.out.println("  Job Role         : " + la.getRole());
@@ -288,7 +278,7 @@ public class LeaveMenu {
         System.out.println("  Leave Period     : " + la.getFromDate() + "  →  " + la.getToDate());
         System.out.println("  Duration         : " + la.getAmountOfDays() + " day(s)");
         System.out.println("  Status           : " + statusBadge);
-        System.out.println(THIN);
+        System.out.println(SINGLE_LINE);
     }
 
     private String prompt(String label) {
@@ -297,7 +287,6 @@ public class LeaveMenu {
     }
 
     private boolean isHR(User user) {
-        // Any role containing "HR" (case-insensitive) is treated as HR staff
         return user != null && user.getRole() != null
                 && user.getRole().toUpperCase().contains("HR");
     }
