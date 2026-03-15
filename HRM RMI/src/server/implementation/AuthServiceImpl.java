@@ -86,7 +86,7 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService
 
     //UPDATE PROFILE
     @Override
-    public User updateProfile(String sessionID, String newName, String newEmail, String newPassword) throws RemoteException
+    public User updateProfile(String sessionID, String newEmail, String newPassword) throws RemoteException
     {
         User session = requireSession(sessionID);
         String originalEmail = session.getEmail();
