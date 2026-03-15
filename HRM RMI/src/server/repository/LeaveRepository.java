@@ -15,7 +15,6 @@ public class LeaveRepository {
 
     private static final String DATA_FILE = "data/leave_requests.json";
 
-    @SuppressWarnings("unchecked")
     public List<LeaveApplication> loadAll() {
         List<LeaveApplication> list = new ArrayList<>();
         File file = new File(DATA_FILE);
@@ -36,7 +35,6 @@ public class LeaveRepository {
         return list;
     }
 
-    @SuppressWarnings("unchecked")
     public void saveAll(List<LeaveApplication> applications) {
         JSONArray arr = new JSONArray();
         for (LeaveApplication la : applications) {
@@ -93,7 +91,6 @@ public class LeaveRepository {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
     private JSONObject toJson(LeaveApplication la) {
         JSONObject jo = new JSONObject();
         jo.put("applicationId", la.getApplicationId());

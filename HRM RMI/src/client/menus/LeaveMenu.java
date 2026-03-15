@@ -21,7 +21,6 @@ public class LeaveMenu {
     private final Scanner            scanner;
     private final EmployeeRepository employeeRepo; // ADDED: to look up name/position from employees.json
 
-    // CHANGED: constructor now accepts EmployeeRepository
     public LeaveMenu(LeaveController leaveController, Scanner scanner, EmployeeRepository employeeRepo) {
         this.leaveController = leaveController;
         this.scanner         = scanner;
@@ -49,8 +48,7 @@ public class LeaveMenu {
         }
     }
 
-    // ── Menu Options ──────────────────────────────────────────────────────────
-
+    //Menu
     private void printLeaveHeader() {
         System.out.println("\n" + DIVIDER);
         System.out.println("         LEAVE MANAGEMENT MODULE         ");
@@ -74,8 +72,7 @@ public class LeaveMenu {
         System.out.println(SINGLE_LINE);
     }
 
-    // ── Employee ──────────────────────────────────────────────────────────────
-
+    //Employee
     private boolean EmployeeChoice(String choice, User currentUser) {
         switch (choice) {
             case "1" -> applyForLeave(currentUser);
@@ -133,7 +130,6 @@ public class LeaveMenu {
         }
 
         try {
-            // CHANGED: passes employeeId (from employees.json) instead of email/name/role
             LeaveApplication la = leaveController.applyAndSubmit(
                     employee.getEmployeeId(),
                     fromDate,
@@ -151,7 +147,6 @@ public class LeaveMenu {
         System.out.println("  VIEW LEAVE BALANCE");
         System.out.println(DIVIDER);
 
-        // CHANGED: look up employee from employees.json to get employeeId
         Employee employee = employeeRepo.findByEmail(currentUser.getEmail());
         if (employee == null) {
             System.out.println("  [!] Employee record not found.");
@@ -160,7 +155,6 @@ public class LeaveMenu {
 
         try {
             int balance = leaveController.getLeaveBalance(employee.getEmployeeId());
-            // CHANGED: fullName and position from employees.json
             System.out.println("  Employee  : " + employee.getFullName());
             System.out.println("  Role      : " + employee.getPosition());
             System.out.println(SINGLE_LINE);
@@ -176,7 +170,6 @@ public class LeaveMenu {
         System.out.println("  MY LEAVE APPLICATION STATUS");
         System.out.println(DIVIDER);
 
-        // CHANGED: look up employee from employees.json to get employeeId
         Employee employee = employeeRepo.findByEmail(currentUser.getEmail());
         if (employee == null) {
             System.out.println("  [!] Employee record not found.");
@@ -197,9 +190,7 @@ public class LeaveMenu {
         }
         System.out.println(DIVIDER);
     }
-
-    // ── HR ────────────────────────────────────────────────────────────────────
-
+    //HR
     private boolean HRChoice(String choice, User currentUser) {
         switch (choice) {
             case "1" -> viewPendingApplications();
@@ -292,10 +283,8 @@ public class LeaveMenu {
         System.out.println(DIVIDER);
     }
 
-    // ── Card Display ──────────────────────────────────────────────────────────
 
     private void printApplicationCard(LeaveApplication la) {
-        // CHANGED: look up fullName and position from employees.json using employeeId
         Employee employee = employeeRepo.findById(la.getEmployeeId());
         String fullName = (employee != null) ? employee.getFullName() : "Unknown";
         String position = (employee != null) ? employee.getPosition() : "Unknown";

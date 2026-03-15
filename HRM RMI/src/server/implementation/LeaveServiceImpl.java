@@ -54,14 +54,12 @@ public abstract class LeaveServiceImpl extends UnicastRemoteObject implements Le
 
     @Override
     public int viewLeaveBalance(String employeeId) throws RemoteException {
-        // FIXED: uses findById() from EmployeeRepository, reads leaveDays field
         Employee employee = employeeRepo.findById(employeeId);
         if (employee == null) {
             throw new RemoteException("Employee not found: " + employeeId);
         }
         int totalBalance = employee.getLeaveDays();
 
-        // Subtract already approved leave days
         int usedDays = leaveRepo.findByEmployeeId(employeeId)
                 .stream()
                 .filter(la -> la.getStatus().equalsIgnoreCase("Approved"))

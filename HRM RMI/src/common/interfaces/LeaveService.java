@@ -9,18 +9,15 @@ import java.util.List;
 
 public interface LeaveService extends Remote {
 
-    // CHANGED: was (employeeEmail, name, role, fromDate, toDate) — now only (employeeId, fromDate, toDate)
     LeaveApplication applyForLeave(String employeeId, LocalDate fromDate, LocalDate toDate)
             throws RemoteException;
 
     boolean submitLeaveApplication(LeaveApplication leaveApplication)
             throws RemoteException;
 
-    // CHANGED: was (employeeEmail) — now (employeeId)
     int viewLeaveBalance(String employeeId)
             throws RemoteException;
 
-    // CHANGED: was (employeeEmail) — now (employeeId)
     List<LeaveApplication> viewLeaveApplicationStatus(String employeeId)
             throws RemoteException;
 
@@ -36,7 +33,6 @@ public interface LeaveService extends Remote {
     List<LeaveApplication> getAllLeaveApplications()
             throws RemoteException;
 
-    // CHANGED: was (employeeEmail) — now (employeeId)
     List<LeaveApplication> getLeaveApplicationsByEmployee(String employeeId)
             throws RemoteException;
 }
