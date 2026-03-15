@@ -3,12 +3,12 @@ import client.controllers.AuthController;
 import common.models.User;
 import java.util.Scanner;
 
-public class MainMenu
+public class ProfileMenu
 {
     private final AuthController authController;
     private final Scanner scanner;
 
-    public MainMenu(AuthController authController, Scanner scanner)
+    public ProfileMenu(AuthController authController, Scanner scanner)
     {
         this.authController = authController;
         this.scanner = scanner;
@@ -25,14 +25,8 @@ public class MainMenu
                 //profile
                 case "1": doViewProfile();   break;
                 case "2": doUpdateProfile(); break;
-                //HR
-                //for others :DDD option
-                /*
-                put yo cases here for other options like view employees, manage employees, etc. depending on the role of the user (HR, Manager, Employee) and delete this comment/placeholder
-                */
-                //session logout stuff
-                case "9": if (doLogout()) return true; break; //back to main login menu
-                case "10": doLogout(); return false; //exit application
+                case "3": if (doLogout()) return true; break; //back to main login menu
+                case "4": doLogout(); return false; //exit application
                 default: printError("Invalid choice! Please try again.");
             }
         }
