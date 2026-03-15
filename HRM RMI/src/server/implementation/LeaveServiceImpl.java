@@ -3,27 +3,26 @@ package server.implementation;
 import common.interfaces.LeaveService;
 import common.models.Employee;
 import common.models.LeaveApplication;
-import server.repository.EmployeeRepository;
-import server.repository.LeaveRepository;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import server.repository.EmployeeRepository;
+import server.repository.LeaveRepository;
 
-public abstract class LeaveServiceImpl extends UnicastRemoteObject implements LeaveService {
+public class LeaveServiceImpl extends UnicastRemoteObject implements LeaveService {
 
     private static final long serialVersionUID = 1L;
 
     private final LeaveRepository    leaveRepo;
     private final EmployeeRepository employeeRepo;
 
-    public LeaveServiceImpl(LeaveRepository leaveRepo, EmployeeRepository employeeRepo)
+    public LeaveServiceImpl()
             throws RemoteException {
         super();
-        this.leaveRepo    = leaveRepo;
-        this.employeeRepo = employeeRepo;
+        this.leaveRepo    = new LeaveRepository();
+        this.employeeRepo = new EmployeeRepository();
     }
 
     public LeaveApplication applyForLeave(String employeeId, LocalDate fromDate, LocalDate toDate)

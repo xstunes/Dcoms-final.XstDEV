@@ -1,7 +1,6 @@
 package common.interfaces;
 
 import common.models.LeaveApplication;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.time.LocalDate;

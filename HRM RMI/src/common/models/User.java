@@ -18,7 +18,7 @@ public class User implements Serializable
     private String role; //HR or Employee
 
     //session ID
-    private transient String sessionID;
+    private String sessionID;
 
     //CONSTRUCTOR
     public User(){}

@@ -26,7 +26,6 @@ public class ProfileMenu
                 case "1": doViewProfile();   break;
                 case "2": doUpdateProfile(); break;
                 case "3": if (doLogout()) return true; break; //back to main login menu
-                case "4": doLogout(); return false; //exit application
                 default: printError("Invalid choice! Please try again.");
             }
         }
@@ -46,7 +45,7 @@ public class ProfileMenu
         String fullName = authController.getFullName(user.getEmployeeId());
 
         System.out.println("  Employee ID : " + user.getEmployeeId());
-        System.out.println("  Full Name   : " + (fullName.isEmpty() ? "(Name not set)" : fullName));
+        System.out.println("  Full Name   : " + ((fullName != null && !fullName.isEmpty()) ? "(Name not set)" : fullName));
         System.out.println("  Email  : " + user.getEmail());
         System.out.println("  Role   : " + user.getRole());
         System.out.println("  Access : " + (user.isHR() ? "HR" : "Employee"));
@@ -100,7 +99,7 @@ private void doUpdateProfile()
         String name = authController.getCurrentUser() != null
                 ? authController.getCurrentUser().getEmployeeId() : "User";
         String fullName = authController.getFullName(name);
-        String displayName = fullName.isEmpty() ? "[" + name + "]" : fullName;
+        String displayName = (fullName != null && !fullName.isEmpty()) ? "[" + name + "]" : fullName;
         String error = authController.logout();
         if (error == null) {
             System.out.println();
@@ -123,15 +122,8 @@ private void doUpdateProfile()
         System.out.println("=== Main Menu ===");
         System.out.println("1. View Profile");
         System.out.println("2. Update Profile");
-        if (authController.isHR())
-        {
-            System.out.println("3. View Employees");
-            //add more HR options here
-        }
-        //add more role-based options here
-        System.out.println("9. Logout");
-        System.out.println("10. Exit Application");
-        System.out.print("Enter your choice: ");
+        System.out.println("3. Back");
+        System.out.print("\n Enter your choice: ");
     }
 
     private void printError(String message)

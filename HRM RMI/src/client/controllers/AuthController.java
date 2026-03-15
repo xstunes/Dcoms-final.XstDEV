@@ -11,7 +11,7 @@ public class AuthController
 {
     //rmi connection
     private static final String HOST = "localhost";
-    private static final int PORT = 1099;
+    private static final int PORT = 2099;
     private static final String SERVICE_NAME = "AuthService";
 
     //state
