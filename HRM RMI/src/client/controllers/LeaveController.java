@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
-
 public class LeaveController {
 
     private final LeaveService leaveService;
@@ -17,8 +16,10 @@ public class LeaveController {
         this.leaveService = leaveService;
     }
 
-    public LeaveApplication applyAndSubmit(String employeeEmail, String name, String role,
-                                           String fromDateStr, String toDateStr) throws Exception {
+    // CHANGED: removed name/role params — only needs employeeId now
+    public LeaveApplication applyAndSubmit(String employeeId,
+                                           String fromDateStr,
+                                           String toDateStr) throws Exception {
         LocalDate fromDate;
         LocalDate toDate;
         try {
@@ -28,18 +29,20 @@ public class LeaveController {
             throw new Exception("Invalid date format. Please use YYYY-MM-DD.");
         }
 
-        LeaveApplication la = leaveService.applyForLeave(employeeEmail, name, role, fromDate, toDate);
+        LeaveApplication la = leaveService.applyForLeave(employeeId, fromDate, toDate);
         boolean ok = leaveService.submitLeaveApplication(la);
         if (!ok) throw new Exception("Failed to submit leave application.");
         return la;
     }
 
-    public int getLeaveBalance(String employeeEmail) throws RemoteException {
-        return leaveService.viewLeaveBalance(employeeEmail);
+    // CHANGED: parameter is employeeId, not email
+    public int getLeaveBalance(String employeeId) throws RemoteException {
+        return leaveService.viewLeaveBalance(employeeId);
     }
 
-    public List<LeaveApplication> getMyApplications(String employeeEmail) throws RemoteException {
-        return leaveService.viewLeaveApplicationStatus(employeeEmail);
+    // CHANGED: parameter is employeeId, not email
+    public List<LeaveApplication> getMyApplications(String employeeId) throws RemoteException {
+        return leaveService.viewLeaveApplicationStatus(employeeId);
     }
 
     public List<LeaveApplication> getPendingApplications() throws RemoteException {
