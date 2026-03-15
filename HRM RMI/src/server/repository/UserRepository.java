@@ -77,6 +77,7 @@ public class UserRepository
                 return fromJson(obj);
             }
         }
+        return null;
     }
 
     //write new

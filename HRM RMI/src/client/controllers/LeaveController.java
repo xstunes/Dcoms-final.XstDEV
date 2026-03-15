@@ -16,7 +16,6 @@ public class LeaveController {
         this.leaveService = leaveService;
     }
 
-    // CHANGED: removed name/role params — only needs employeeId now
     public LeaveApplication applyAndSubmit(String employeeId,
                                            String fromDateStr,
                                            String toDateStr) throws Exception {
@@ -35,12 +34,10 @@ public class LeaveController {
         return la;
     }
 
-    // CHANGED: parameter is employeeId, not email
     public int getLeaveBalance(String employeeId) throws RemoteException {
         return leaveService.viewLeaveBalance(employeeId);
     }
 
-    // CHANGED: parameter is employeeId, not email
     public List<LeaveApplication> getMyApplications(String employeeId) throws RemoteException {
         return leaveService.viewLeaveApplicationStatus(employeeId);
     }
