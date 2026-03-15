@@ -72,7 +72,7 @@ public class UserRepository
         for (int i = 0; i < arr.length(); i++)
         {
             JSONObject obj = arr.getJSONObject(i);
-            if (employeeId.equalsIgnoreCase(obj.optString("name"))) //using "name" field to store employee ID for simplicity
+            if (employeeId.equalsIgnoreCase(obj.optString("employeeId")))
             {
                 return fromJson(obj);
             }
