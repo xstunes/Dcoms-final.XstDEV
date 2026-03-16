@@ -9,8 +9,10 @@ import java.util.*;
 
 public class UserRepository
 {
-    static final String DATA_DIR =  "data"; //directory for data files
+    static final String DATA_DIR =  "HRM RMI/data"; //directory for data files
     static final String FILE_PATH = DATA_DIR + "/users.json";
+
+
 
     public static void init()
     {

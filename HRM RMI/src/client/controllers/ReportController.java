@@ -3,6 +3,7 @@ package client.controllers;
 import common.interfaces.ReportService;
 import common.models.Employee;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.rmi.registry.LocateRegistry;
@@ -111,7 +112,12 @@ public class ReportController {
      * @return true if saved successfully, false otherwise
      */
     public boolean exportReportToFile(String content, String filename) {
-        try (FileWriter writer = new FileWriter(filename)) {
+        File reportsDir = new File("reports");
+        if (!reportsDir.exists()){
+            reportsDir.mkdirs();
+        }
+        File outputFile = new File(reportsDir, filename);
+        try (FileWriter writer = new FileWriter(outputFile)) {
             writer.write(content);
             return true;
         } catch (IOException e) {

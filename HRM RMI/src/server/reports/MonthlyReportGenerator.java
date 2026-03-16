@@ -112,10 +112,10 @@ public class MonthlyReportGenerator {
 
         // ── Department Summary Table ───────────────────────────
         sb.append("--- Department Summary ---\n");
-        sb.append(String.format("%-20s %-18s %-18s %-18s%n",
-                "Department", "Total Employees", "Total Leave Days", "Total Salary (RM)"));
-        sb.append(String.format("%-20s %-18s %-18s %-18s%n",
-                "-".repeat(18), "-".repeat(16), "-".repeat(16), "-".repeat(16)));
+        sb.append(String.format("%-20s %-18s %-18s%n",
+                "Department", "Total Employees", "Total Leave Days"));
+        sb.append(String.format("%-20s %-18s %-18s%n",
+                "-".repeat(18), "-".repeat(16), "-".repeat(16)));
 
         // Group employees by department
         Map<String, List<Employee>> byDept = new LinkedHashMap<>();
@@ -123,39 +123,31 @@ public class MonthlyReportGenerator {
             byDept.computeIfAbsent(e.getDepartment(), dept -> new ArrayList<>()).add(e);
         }
 
-        double grandTotalSalary = 0;
-
         for (Map.Entry<String, List<Employee>> entry : byDept.entrySet()) {
-            String dept         = entry.getKey();
+            String dept              = entry.getKey();
             List<Employee> dept_emps = entry.getValue();
-            int deptLeaveDays   = 0;
-            double deptSalary   = 0;
+            int deptLeaveDays        = 0;
 
             for (Employee e : dept_emps) {
                 String key = e.getEmployeeId().toUpperCase();
                 int[]  stats = leaveStats.getOrDefault(key, new int[]{0, 0, 0, 0});
                 deptLeaveDays += stats[0];
-                deptSalary    += e.getSalary();
             }
 
-            grandTotalSalary += deptSalary;
-
-            sb.append(String.format("%-20s %-18d %-18d RM %,.2f%n",
+            sb.append(String.format("%-20s %-18d %-18d%n",
                     truncate(dept, 18),
                     dept_emps.size(),
-                    deptLeaveDays,
-                    deptSalary));
+                    deptLeaveDays));
         }
         sb.append("\n");
 
         // ── Month Totals ───────────────────────────────────────
         sb.append("--- Month Totals ---\n");
-        sb.append(String.format("%-35s: %d%n",   "Total Employees",          employees.size()));
+        sb.append(String.format("%-35s: %d%n",   "Total Employees",             employees.size()));
         sb.append(String.format("%-35s: %d%n",   "Total Leave Days (Approved)", grandTotalApprovedDays));
-        sb.append(String.format("%-35s: RM %,.2f%n", "Total Payroll",         grandTotalSalary));
-        sb.append(String.format("%-35s: %d%n",   "Approved Leave Applications",  grandTotalApprovedCount));
-        sb.append(String.format("%-35s: %d%n",   "Pending Leave Applications",   grandTotalPendingCount));
-        sb.append(String.format("%-35s: %d%n",   "Rejected Leave Applications",  grandTotalRejectedCount));
+        sb.append(String.format("%-35s: %d%n",   "Approved Leave Applications", grandTotalApprovedCount));
+        sb.append(String.format("%-35s: %d%n",   "Pending Leave Applications",  grandTotalPendingCount));
+        sb.append(String.format("%-35s: %d%n",   "Rejected Leave Applications", grandTotalRejectedCount));
 
         sb.append(DIVIDER).append("\n");
         return sb.toString();

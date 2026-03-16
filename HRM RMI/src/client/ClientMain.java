@@ -79,7 +79,7 @@ public class ClientMain
                 System.out.println("\n=== Employee Menu ===");
                 System.out.println("1. Leave Management");
                 System.out.println("2. My Profile");
-                System.out.println("3. Logout");
+                System.out.println("0. Logout");
                 System.out.print("\nSelect an option: ");
                 String choice = scanner.nextLine().trim();
 
