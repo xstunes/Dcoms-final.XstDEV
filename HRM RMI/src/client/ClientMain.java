@@ -86,11 +86,7 @@ public class ClientMain
                 switch (choice)
                 {
                     case "1" -> leaveMenu.show(authController.getCurrentUser());
-                    case "2" ->
-                    {
-                        boolean loggedOut = profileMenu.show();
-                        if(loggedOut)return;
-                    }
+                    case "2" -> profileMenu.show();
                     case "0" -> {
                         authController.logout();
                         return; //back to login menu

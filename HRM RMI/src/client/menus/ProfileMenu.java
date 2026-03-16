@@ -14,19 +14,19 @@ public class ProfileMenu
         this.scanner = scanner;
     }
 
-    public boolean show()
+    public void show()
     {
         while (true)
         {
             printHeader();
             String choice = scanner.nextLine().trim();
-            switch (choice) //switch to rule switch after menu is done
+            switch (choice)
             {
                 //profile
-                case "1": doViewProfile();   break;
-                case "2": doUpdateProfile(); break;
-                case "3": if (doLogout()) return true; break; //back to main login menu
-                default: printError("Invalid choice! Please try again.");
+                case "1"-> doViewProfile();
+                case "2"-> doUpdateProfile();
+                case "3"-> {return;}
+                default-> printError("Invalid choice! Please try again.");
             }
         }
     }
@@ -92,27 +92,6 @@ private void doUpdateProfile()
             printError(error);
         }
         pause();
-    }
-
-    private boolean doLogout()
-    {
-        String name = authController.getCurrentUser() != null
-                ? authController.getCurrentUser().getEmployeeId() : "User";
-        String fullName = authController.getFullName(name);
-        String displayName = (fullName != null && !fullName.isEmpty()) ? "[" + name + "]" : fullName;
-        String error = authController.logout();
-        if (error == null) {
-            System.out.println();
-            System.out.println("  ✔  Logged out. Goodbye, " + displayName + "!");
-            System.out.println();
-            pause();
-            return true;
-        }
-        else
-        {
-            printError("Logout error: " + error);
-            return false;
-        }
     }
 
     //UI
