@@ -42,7 +42,7 @@ public class HRMenu
         {
             try
             {
-                System.out.println("\n====== WELCOME TO HR MANAGEMENT SYSTEM ======");
+                System.out.println("\n====== WELCOME TO HR MANAGEMENT MENU ======");
                 System.out.println("1. Employee Management");
                 System.out.println("2. Leave Management");
                 System.out.println("3. Reports");
@@ -58,11 +58,7 @@ public class HRMenu
                     case "1" -> showHRMainMenu();
                     case "2" -> leaveMenu.show(authController.getCurrentUser());
                     case "3" -> reportMenu.show();
-                    case "4" ->
-                    {
-                        boolean loggedOut = profileMenu.show();
-                        if(loggedOut)return;
-                    }
+                    case "4" -> profileMenu.show();
                     case "5" -> createUserAccount();
                     case "0" -> {
                         authController.logout();
