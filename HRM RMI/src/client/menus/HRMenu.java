@@ -383,10 +383,63 @@ public class HRMenu
                 }
             }
 
+            String role;
+            while(true)
+            {
+                System.out.println(" Role options: [1] HR   [2] Employee");
+                System.out.println("    Role: ");
+                String roleChoice = scanner.nextLine().trim();
+                if(roleChoice.equals("1")){role = "HR"; break;}
+                else if(roleChoice.equals("2")){role = "Employee"; break;}
+                else System.out.println("Invalid choice!");
+            }
+
+
+            //confirmation
+            System.out.println("\n PREVIEW---------------------------------------");
+            System.out.println("    Employee Id: "+ id);
+            System.out.println("    Full Name: "+ name);
+            System.out.println("    Email: "+ email);
+            System.out.println("    Phone: "+ phone);
+            System.out.println("    Department: "+ department);
+            System.out.println("    Position: "+ position);
+            System.out.println("    Salary: RM %.2f%n"+ salary );
+            System.out.println("    Leave Days: "+ leaveDays);
+            System.out.println("    Role: "+ role);
+            System.out.println("    Password: [ will be auto-generated ]");
+            System.out.println("    Status: PENDING");
+            System.out.println("------------------------------------------------");
+            System.out.println("    Confirm? [Y/N]: ");
+            if(!scanner.nextLine().trim().equalsIgnoreCase("Y"))
+            {
+                System.out.println("Registration is cancelled.");
+                return;
+            }
+
             Employee employee = new Employee(id, name, email, phone, department, position, salary, leaveDays);
 
             String message = employeeService.registerEmployee(employee);
             System.out.println(message);
+
+            //create user account in user.json
+            String password = authController.registerUser(id, email, role);
+            if(password.startsWith("Error: "))
+            {
+                System.out.println("[!] Employee record is saved but user account creation failed." + password);
+                return;
+            }
+
+            //success, show one time password
+            System.out.println("\n  ✔  Employee registered successfully!");
+            System.out.println("  ┌─────────────────────────────────────────────────┐");
+            System.out.printf ("  │  Employee ID : %s%n", id);
+            System.out.printf ("  │  Name        : %s%n", name);
+            System.out.printf ("  │  Email       : %s%n", email);
+            System.out.printf ("  │  Role        : %s%n", role);
+            System.out.printf ("  │  Password    : %s%n", password);
+            System.out.println("  └─────────────────────────────────────────────────┘");
+            System.out.println("  [i] Give the password above to the employee.");
+            System.out.println("  [i] Employee status is PENDING — approve via Validate Employee Detail.");
 
         } catch (Exception e) {
             System.out.println("An unexpected error occurred while registering employee.");

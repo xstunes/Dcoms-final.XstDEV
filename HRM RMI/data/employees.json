@@ -42,5 +42,16 @@
     "salary": 3000.0,
     "leaveDays": 12,
     "status": "PENDING"
+  },
+  {
+    "employeeId": "E005",
+    "fullName": "Leslie Higgins",
+    "email": "leslieh@mail.com",
+    "phone": "0134457899",
+    "department": "Marketing",
+    "position": "Sales Assistant",
+    "salary": 3500.0,
+    "leaveDays": 7,
+    "status": "APPROVED"
   }
 ]

@@ -45,7 +45,7 @@ public class ProfileMenu
         String fullName = authController.getFullName(user.getEmployeeId());
 
         System.out.println("  Employee ID : " + user.getEmployeeId());
-        System.out.println("  Full Name   : " + ((fullName != null && !fullName.isEmpty()) ? "(Name not set)" : fullName));
+        System.out.println("  Full Name   : " + ((fullName == null || fullName.isEmpty()) ? "(Name not set)" : fullName));
         System.out.println("  Email  : " + user.getEmail());
         System.out.println("  Role   : " + user.getRole());
         System.out.println("  Access : " + (user.isHR() ? "HR" : "Employee"));
@@ -80,7 +80,7 @@ private void doUpdateProfile()
             System.out.println();
             System.out.println("  ✔  Profile updated successfully!");
             System.out.println("     Employee ID : " + updated.getEmployeeId());
-            System.out.println("     Full Name   : " + (fullName.isEmpty() ? "(Name not set)" : fullName));
+            System.out.println("     Full Name   : " + ((fullName == null || fullName.isEmpty()) ? "(Name not set)" : fullName));
             System.out.println("     Email : " + updated.getEmail());
             System.out.println("     Role  : " + updated.getRole());
 

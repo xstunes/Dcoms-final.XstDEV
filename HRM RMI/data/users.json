@@ -10,5 +10,11 @@
     "role": "Employee",
     "employeeId": "E002",
     "email": "Mermaid@mail.com"
+  },
+  {
+    "password": "f1ece36aa667c04f0bc6a1378bb8cf0c5902cd78d27db69ae68efd46cf0d647c",
+    "role": "Employee",
+    "employeeId": "E005",
+    "email": "leslieh@mail.com"
   }
 ]

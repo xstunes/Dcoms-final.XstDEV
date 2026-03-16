@@ -32,12 +32,13 @@ public class AuthController
     {
         this.employeeService = employeeService;
     }
+
     public String getFullName (String employeeId)
     {
         if (employeeService == null || employeeId == null) return null;
         try
         {
-            Employee emp = employeeService.viewEmployeeRecord(employeeId);
+            Employee emp = employeeService.getEmployeeById(employeeId);
             return emp != null ? emp.getFullName() : null;
         }
         catch (RemoteException e)

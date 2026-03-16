@@ -2,12 +2,11 @@ package server.implementation;
 
 import common.interfaces.EmployeeService;
 import common.models.Employee;
-import server.repository.EmployeeRepository;
-
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
+import server.repository.EmployeeRepository;
 
 public class EmployeeServiceImpl extends UnicastRemoteObject implements EmployeeService {
 
@@ -203,6 +202,16 @@ public class EmployeeServiceImpl extends UnicastRemoteObject implements Employee
         }
 
         return null;
+    }
+
+    @Override
+    public Employee getEmployeeById(String employeeId) throws RemoteException
+    {
+        if(isNullOrEmpty(employeeId))
+        {
+            return null;
+        }
+        return employeeRepository.findById(employeeId); //return all including PENDING
     }
 
     @Override

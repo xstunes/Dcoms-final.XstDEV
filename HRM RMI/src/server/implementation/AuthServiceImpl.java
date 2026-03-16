@@ -1,10 +1,12 @@
 package server.implementation;
 import common.interfaces.AuthService;
+import common.models.Employee;
 import common.models.User;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import server.repository.EmployeeRepository;
 import server.repository.PasswordUtility;
 import server.repository.UserRepository;
 
@@ -14,6 +16,7 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService
 {
     private static final long serialVersionUID =  1L;
     private final Map<String, User> activeSessions = new ConcurrentHashMap<>();
+    private final EmployeeRepository employeeRepository= new EmployeeRepository();
 
     public AuthServiceImpl() throws RemoteException
     {
@@ -110,7 +113,7 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService
                 {
                     throw new RemoteException("Email is already in use by another account.");
                 }
-                user.setEmail(trimmed); // what is wrong with you
+                user.setEmail(trimmed);
                 changed = true;
             }
         }
@@ -136,6 +139,18 @@ public class AuthServiceImpl extends UnicastRemoteObject implements AuthService
         if(!saved)
         {
             throw new RemoteException("Failed to update user profile. Please try again.");
+        }
+
+        //update employee.json
+        if(!user.getEmail().equals(originalEmail))
+        {
+            Employee emp = employeeRepository.findByEmail(originalEmail);
+            if(emp != null)
+            {
+                emp.setEmail(user.getEmail());
+                employeeRepository.updateEmployee(emp);
+                System.out.println("Employee email has changed "+ originalEmail + " -> " + user.getEmail());
+            }
         }
 
         //update session
