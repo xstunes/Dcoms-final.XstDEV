@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
+
 import server.repository.EmployeeRepository;
 import server.repository.LeaveRepository;
 
@@ -18,7 +18,6 @@ public class LeaveServiceImpl extends UnicastRemoteObject implements LeaveServic
     private final LeaveRepository    leaveRepo;
     private final EmployeeRepository employeeRepo;
 
-    // FIXED: No-arg constructor — matches team's pattern, instantiates repos internally
     public LeaveServiceImpl() throws RemoteException {
         super();
         this.leaveRepo    = new LeaveRepository();
@@ -36,7 +35,7 @@ public class LeaveServiceImpl extends UnicastRemoteObject implements LeaveServic
             throw new RemoteException("Invalid dates: 'from' date must be before or equal to 'to' date.");
         }
 
-        String id = "LA-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        String id = generateApplicationId();
         return new LeaveApplication(id, employeeId, fromDate, toDate);
     }
 
@@ -53,15 +52,12 @@ public class LeaveServiceImpl extends UnicastRemoteObject implements LeaveServic
 
     @Override
     public int viewLeaveBalance(String employeeId) throws RemoteException {
-        // Looks up leaveDays from employees.json — NOT restricted to APPROVED only
-        // because balance check must work for all registered employees
         Employee employee = employeeRepo.findById(employeeId);
         if (employee == null) {
             throw new RemoteException("Employee not found: " + employeeId);
         }
         int totalBalance = employee.getLeaveDays();
 
-        // Subtract approved leave days from leave_requests.json
         int usedDays = leaveRepo.findByEmployeeId(employeeId)
                 .stream()
                 .filter(la -> la.getStatus().equalsIgnoreCase("Approved"))
@@ -112,5 +108,18 @@ public class LeaveServiceImpl extends UnicastRemoteObject implements LeaveServic
     public List<LeaveApplication> getLeaveApplicationsByEmployee(String employeeId)
             throws RemoteException {
         return leaveRepo.findByEmployeeId(employeeId);
+    }
+
+    private String generateApplicationId() {
+        List<LeaveApplication> all = leaveRepo.loadAll();
+        int max = 0;
+        for (LeaveApplication la : all) {
+            String appId = la.getApplicationId();
+            if (appId != null && appId.matches("LA\\d+")) {
+                int num = Integer.parseInt(appId.substring(2));
+                if (num > max) max = num;
+            }
+        }
+        return String.format("LA%03d", max + 1);
     }
 }

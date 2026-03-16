@@ -12,9 +12,9 @@ public class LeaveApplication implements Serializable {
     private String    applicationId;
     private LocalDate fromDate;
     private LocalDate toDate;
-    private int       amountOfDays;   // auto-calculated
-    private LocalDate appliedDate;    // date form was submitted (initialDate)
-    private String    status;         // Pending / Approved / Declined
+    private int       amountOfDays;
+    private LocalDate appliedDate;
+    private String    status;
 
     public LeaveApplication() {}
 
@@ -34,7 +34,7 @@ public class LeaveApplication implements Serializable {
     public LocalDate getFromDate()      { return fromDate; }
     public LocalDate getToDate()        { return toDate; }
     public int       getAmountOfDays()  { return amountOfDays; }
-    public LocalDate getInitialDate()   { return appliedDate; }   // appliedDate = initialDate
+    public LocalDate getInitialDate()   { return appliedDate; }
     public String    getStatus()        { return status; }
 
     public void setApplicationId(String applicationId) { this.applicationId = applicationId; }

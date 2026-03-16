@@ -12,10 +12,6 @@ public class LeaveController {
 
     private final LeaveService leaveService;
 
-    // FIXED: Takes LeaveService as parameter — matches how HRMenu and ClientMain call it:
-    // new LeaveController(leaveService)
-    // The LeaveService stub is already looked up in ClientMain via registry.lookup("LeaveService")
-    // so LeaveController does NOT need to connect itself
     public LeaveController(LeaveService leaveService) {
         this.leaveService = leaveService;
     }

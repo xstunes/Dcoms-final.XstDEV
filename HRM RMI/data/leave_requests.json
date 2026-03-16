@@ -1,6 +1,6 @@
 [
   {
-    "applicationId": "LA-A1B2C3D4",
+    "applicationId": "LA001",
     "employeeId": "E001",
     "fromDate": "2026-03-20",
     "toDate": "2026-03-22",
@@ -9,7 +9,7 @@
     "status": "Approved"
   },
   {
-    "applicationId": "LA-E5F6G7H8",
+    "applicationId": "LA002",
     "employeeId": "E002",
     "fromDate": "2026-03-25",
     "toDate": "2026-03-28",
@@ -18,12 +18,30 @@
     "status": "Approved"
   },
   {
-    "applicationId": "LA-I9J0K1L2",
+    "applicationId": "LA003",
     "employeeId": "E003",
     "fromDate": "2026-04-01",
     "toDate": "2026-04-01",
     "amountOfDays": 1,
     "initialDate": "2026-03-14",
     "status": "Declined"
+  },
+  {
+    "applicationId": "LA004",
+    "employeeId": "E002",
+    "fromDate": "2026-04-07",
+    "toDate": "2026-04-08",
+    "amountOfDays": 2,
+    "initialDate": "2026-03-16",
+    "status": "Approved"
+  },
+  {
+    "applicationId": "LA005",
+    "employeeId": "E002",
+    "fromDate": "2026-05-23",
+    "toDate": "2026-05-25",
+    "amountOfDays": 3,
+    "initialDate": "2026-03-16",
+    "status": "Approved"
   }
 ]

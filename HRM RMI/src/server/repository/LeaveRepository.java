@@ -14,7 +14,6 @@ import java.util.UUID;
 
 public class LeaveRepository {
 
-    // Matches EmployeeRepository path pattern
     private static final String DATA_FILE = "HRM RMI/data/leave_requests.json";
     private final Gson gson;
 
@@ -42,7 +41,6 @@ public class LeaveRepository {
         }
     }
 
-    // ── Load ──────────────────────────────────────────────────────────────────
 
     public List<LeaveApplication> loadAll() {
         try (FileReader reader = new FileReader(DATA_FILE)) {
@@ -61,8 +59,6 @@ public class LeaveRepository {
         }
     }
 
-    // ── Save ──────────────────────────────────────────────────────────────────
-
     public void saveAll(List<LeaveApplication> applications) {
         List<LeaveApplicationJson> raw = new ArrayList<>();
         for (LeaveApplication la : applications) {
@@ -75,7 +71,6 @@ public class LeaveRepository {
         }
     }
 
-    // ── Add ───────────────────────────────────────────────────────────────────
 
     public void add(LeaveApplication la) {
         List<LeaveApplication> all = loadAll();
@@ -86,7 +81,6 @@ public class LeaveRepository {
         saveAll(all);
     }
 
-    // ── Update ────────────────────────────────────────────────────────────────
 
     public boolean update(LeaveApplication updated) {
         List<LeaveApplication> all = loadAll();
@@ -100,7 +94,6 @@ public class LeaveRepository {
         return false;
     }
 
-    // ── Find by applicationId ─────────────────────────────────────────────────
 
     public LeaveApplication findById(String applicationId) {
         for (LeaveApplication la : loadAll()) {
@@ -109,7 +102,6 @@ public class LeaveRepository {
         return null;
     }
 
-    // ── Find by employeeId ────────────────────────────────────────────────────
 
     public List<LeaveApplication> findByEmployeeId(String employeeId) {
         List<LeaveApplication> result = new ArrayList<>();
@@ -119,7 +111,6 @@ public class LeaveRepository {
         return result;
     }
 
-    // ── Find by status ────────────────────────────────────────────────────────
 
     public List<LeaveApplication> findByStatus(String status) {
         List<LeaveApplication> result = new ArrayList<>();
@@ -128,10 +119,6 @@ public class LeaveRepository {
         }
         return result;
     }
-
-    // ── Inner class for Gson serialization ────────────────────────────────────
-    // Gson cannot handle LocalDate natively — we store dates as Strings in JSON
-    // and convert on read/write. Field names match leave_requests.json exactly.
 
     private static class LeaveApplicationJson {
         String applicationId;
@@ -153,7 +140,6 @@ public class LeaveRepository {
             this.status        = la.getStatus();
         }
 
-        // Convert JSON-friendly object → LeaveApplication
         LeaveApplication toLeaveApplication() {
             LeaveApplication la = new LeaveApplication();
             la.setApplicationId(applicationId);
