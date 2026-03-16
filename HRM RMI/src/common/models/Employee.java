@@ -86,21 +86,13 @@ public class Employee implements Serializable {
         this.salary = salary;
     }
 
-    public int getLeaveDays() {
-        return leaveDays;
-    }
+    public int getLeaveDays() {return leaveDays;}
 
-    public void setLeaveDays(int leaveDays) {
-        this.leaveDays = leaveDays;
-    }
+    public void setLeaveDays(int leaveDays) {this.leaveDays = leaveDays;}
 
-    public String getStatus() {
-        return status;
-    }
+    public String getStatus() {return status;}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public void setStatus(String status) {this.status = status;}
 
     @Override
     public String toString() {

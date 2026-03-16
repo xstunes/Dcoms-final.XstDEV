@@ -157,12 +157,26 @@ public class HRMenu
             return;
         }
 
+
         //skeleton for after user creation to employee.json
-        Employee skeleton = new Employee();
-        skeleton.setEmployeeId(employeeId);
-        skeleton.setEmail(email);
-        skeleton.setStatus("PENDING");
-        employeeService.registerEmployee(skeleton);
+//        Employee skeleton = new Employee(employeeId, email, department, position, salary);
+//        skeleton.setEmployeeId(employeeId);
+//        skeleton.setEmail(email);
+//        skeleton.setStatus("PENDING");
+//        employeeService.registerEmployee(skeleton);
+
+            Employee skeleton = new Employee();
+            skeleton.setEmployeeId(employeeId);
+            skeleton.setEmail(email);
+            skeleton.setFullName("");
+            skeleton.setPhone("");
+            skeleton.setDepartment("");
+            skeleton.setPosition("");
+            skeleton.setSalary(0.0);
+            skeleton.setLeaveDays(0);
+            skeleton.setStatus("PENDING");
+
+            employeeService.registerEmployee(skeleton);
 
         //result
         System.out.println("\nUser account created successfully.");
@@ -384,6 +398,7 @@ public class HRMenu
     }
 
 
+
     private void validateEmployee() {
         try {
             while (true) {
@@ -501,7 +516,7 @@ public class HRMenu
         }
     }
 
-    private  void displayEmployeeRecords(List<Employee> employees) {
+    private void displayEmployeeRecords(List<Employee> employees) {
         System.out.println("===============================================================================================================================");
         System.out.printf("%-10s %-20s %-25s %-15s %-12s %-20s %-12s %-10s%n",
                 "ID", "Name", "Email", "Phone", "Dept", "Position", "Salary", "Leave");
@@ -522,7 +537,7 @@ public class HRMenu
         System.out.println("===============================================================================================================================");
     }
 
-    private  void updateEmployeeRecord() {
+    private void updateEmployeeRecord() {
         try {
             while (true) {
                 System.out.print("\nEnter Employee ID to update (or 0 to cancel): ");
@@ -550,8 +565,7 @@ public class HRMenu
                     System.out.println("4. Department");
                     System.out.println("5. Position");
                     System.out.println("6. Salary");
-                    System.out.println("7. Leave Days");
-                    System.out.println("8. Save and Exit");
+                    System.out.println("7. Save and Exit");
                     System.out.print("Select option: ");
 
                     String choice = scanner.nextLine().trim();
@@ -628,21 +642,6 @@ public class HRMenu
                             break;
 
                         case "7":
-                            try {
-                                System.out.print("Enter new leave days: ");
-                                int leaveDays = Integer.parseInt(scanner.nextLine().trim());
-                                if (leaveDays < 0) {
-                                    System.out.println("Leave days cannot be negative.");
-                                } else {
-                                    employee.setLeaveDays(leaveDays);
-                                    System.out.println("Leave days updated.");
-                                }
-                            } catch (NumberFormatException e) {
-                                System.out.println("Invalid leave days. Please enter a whole number.");
-                            }
-                            break;
-
-                        case "8":
                             boolean updated = employeeService.updateEmployeeRecord(employee);
                             if (updated) {
                                 System.out.println("Employee record updated successfully.");
