@@ -114,6 +114,33 @@ public class UserRepository
         return false;
     }
 
+    // delete user by employeeId
+    public static synchronized boolean deleteByEmployeeId(String employeeId)
+    {
+        if (employeeId == null) return false;
+
+        JSONArray arr = readArray();
+        boolean removed = false;
+
+        for (int i = 0; i < arr.length(); i++)
+        {
+            JSONObject obj = arr.getJSONObject(i);
+            if (employeeId.equalsIgnoreCase(obj.optString("employeeId")))
+            {
+                arr.remove(i);
+                removed = true;
+                break;
+            }
+        }
+
+        if (removed)
+        {
+            persist(arr);
+        }
+
+        return removed;
+    }
+
     //HELPER METHODS
     private static JSONArray readArray()
     {

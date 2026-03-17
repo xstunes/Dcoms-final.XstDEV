@@ -17,4 +17,7 @@ public interface EmployeeService extends Remote {
     List<Employee> viewAllEmployeeRecords() throws RemoteException;
     boolean updateEmployeeRecord(Employee employee) throws RemoteException;
     boolean deleteEmployeeRecord(String employeeId) throws RemoteException;
+
+
+
 }

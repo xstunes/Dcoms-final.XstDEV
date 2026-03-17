@@ -251,6 +251,12 @@ public class HRMenu
                     continue;
                 }
 
+                if (employeeService.getEmployeeById(id) != null) {
+                    System.out.println("Employee ID already exists. Please enter a different ID.");
+                    System.out.println("Next available ID: " + suggestedId);
+                    continue;
+                }
+
                 break;
             }
 

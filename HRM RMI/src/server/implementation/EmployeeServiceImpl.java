@@ -7,14 +7,17 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 import server.repository.EmployeeRepository;
+import server.repository.UserRepository;
 
 public class EmployeeServiceImpl extends UnicastRemoteObject implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final UserRepository userRepository;
 
     public EmployeeServiceImpl() throws RemoteException {
         super();
         employeeRepository = new EmployeeRepository();
+        userRepository = new UserRepository();
     }
 
     @Override
@@ -274,8 +277,18 @@ public class EmployeeServiceImpl extends UnicastRemoteObject implements Employee
             return false;
         }
 
-        return employeeRepository.deleteEmployee(employeeId);
+        boolean employeeDeleted = employeeRepository.deleteEmployee(employeeId);
+
+        if (!employeeDeleted) {
+            return false;
+        }
+
+        // also delete related login user from users.json
+        UserRepository.deleteByEmployeeId(employeeId);
+
+        return true;
     }
+
 
     private boolean isNullOrEmpty(String value) {
         return value == null || value.trim().isEmpty();
